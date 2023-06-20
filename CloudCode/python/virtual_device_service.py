@@ -20,7 +20,7 @@ def consume_temperature():
     consumer = KafkaConsumer(bootstrap_servers=KAFKA_SERVER+':'+KAFKA_PORT)
     consumer.subscribe(topics=('temperature'))
     for msg in consumer:
-        msg_value = crypto.decrypt(msg.value)
+        msg_value = crypto.decrypt(msg.value.decode())
         print ('Received Temperature: ', msg_value)
         current_temperature = msg_value
 
@@ -30,7 +30,7 @@ def consume_light_level():
     consumer = KafkaConsumer(bootstrap_servers=KAFKA_SERVER+':'+KAFKA_PORT)
     consumer.subscribe(topics=('lightlevel'))
     for msg in consumer:
-        msg_value = crypto.decrypt(msg.value)
+        msg_value = crypto.decrypt(msg.value.decode())
         print ('Received Light Level: ', msg_value)
         current_light_level = msg_value
 
