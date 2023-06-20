@@ -20,8 +20,9 @@ def consume_temperature():
     consumer = KafkaConsumer(bootstrap_servers=KAFKA_SERVER+':'+KAFKA_PORT)
     consumer.subscribe(topics=('temperature'))
     for msg in consumer:
-        print ('Received Temperature: ', msg.value.decode())
-        current_temperature = msg.value.decode()
+        msg_value = crypto.decrypt(msg.value)
+        print ('Received Temperature: ', msg_value)
+        current_temperature = msg_value
 
 # Kafka consumer to run on a separate thread
 def consume_light_level():
@@ -29,12 +30,16 @@ def consume_light_level():
     consumer = KafkaConsumer(bootstrap_servers=KAFKA_SERVER+':'+KAFKA_PORT)
     consumer.subscribe(topics=('lightlevel'))
     for msg in consumer:
-        print ('Received Light Level: ', msg.value.decode())
-        current_light_level = msg.value.decode()
+        msg_value = crypto.decrypt(msg.value)
+        print ('Received Light Level: ', msg_value)
+        current_light_level = msg_value
 
 def produce_led_command(state, ledname):
     producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER+':'+KAFKA_PORT)
-    producer.send('ledcommand', key=ledname.encode(), value=str(state).encode())
+    key = crypto.encrypt(ledname)
+    value = crypto.encrypt(str(state))
+    # producer.send('ledcommand', key=ledname.encode(), value=str(state).encode())
+    producer.send('ledcommand', key=key, value=value)
     return state
         
 class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
