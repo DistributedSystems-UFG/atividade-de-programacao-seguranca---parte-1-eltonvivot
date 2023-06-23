@@ -24,8 +24,10 @@ def run():
 
     if response.ledstate[ledname] == 1:
         print("Led state is on")
-    else:
+    elif response.ledstate[ledname] == 0:
         print("Led state is off")
+    elif response.ledstate[ledname] == 2:
+        print("Wrong password")
 
 if __name__ == '__main__':
     logging.basicConfig()
