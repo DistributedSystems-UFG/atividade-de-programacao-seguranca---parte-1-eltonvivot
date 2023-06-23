@@ -51,7 +51,9 @@ class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
         login = crypto.decrypt(request.login.encode()).decode()
         password = crypto.decrypt(request.password.encode()).decode()
         if not crypto.create_or_login(login, password):
-            return
+            # Update led state of twin
+            led_state[request.ledname] = -1
+            return iot_service_pb2.LedReply(ledstate=led_state)
         ledname = crypto.decrypt(request.ledname.encode()).decode()
         state = crypto.decrypt(request.state.encode()).decode()
 

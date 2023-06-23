@@ -78,9 +78,13 @@ def consume_led_command():
         if msg_value == '1':
             print ('Turning led on')
             GPIO.output(ledpin,GPIO.HIGH)
-        else:
+        elif msg_value == '0':
             print ('Turning led off')
             GPIO.output(ledpin,GPIO.LOW)
+        elif msg_value == '-1':
+            print ('Turning led off')
+        else:
+            print ('Wrong led state')
 
 trd =threading.Thread(target=consume_led_command)
 trd.start()
