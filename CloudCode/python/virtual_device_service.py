@@ -20,7 +20,7 @@ def consume_temperature():
     consumer = KafkaConsumer(bootstrap_servers=KAFKA_SERVER+':'+KAFKA_PORT)
     consumer.subscribe(topics=('temperature'))
     for msg in consumer:
-        msg_value = crypto.decrypt(msg.value.decode())
+        msg_value = crypto.decrypt(msg.value)
         print ('Received Temperature: ', msg_value)
         current_temperature = msg_value
 
