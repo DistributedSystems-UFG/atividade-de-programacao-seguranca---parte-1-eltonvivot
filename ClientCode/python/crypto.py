@@ -1,9 +1,9 @@
 from cryptography.fernet import Fernet
 import json, const
 
-def encrypt(message: str, key: bytes = const.FERNET_KEY) -> str:
-    return Fernet(key).encrypt(message.encode()).decode()
+def encrypt(message: bytes, key: bytes = const.FERNET_KEY) -> bytes:
+    return Fernet(key).encrypt(message)
 
-def decrypt(token: str, key: bytes = const.FERNET_KEY) -> str:
-    return Fernet(key).decrypt(token.encode()).decode()
+def decrypt(token: bytes, key: bytes = const.FERNET_KEY) -> bytes:
+    return Fernet(key).decrypt(token)
 
