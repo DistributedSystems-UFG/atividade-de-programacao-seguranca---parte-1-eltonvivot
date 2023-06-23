@@ -48,11 +48,11 @@ class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
         return iot_service_pb2.TemperatureReply(temperature=current_temperature)
     
     def BlinkLed(self, request, context):
-        login = crypto.decrypt(request.login).decode()
-        password = crypto.decrypt(request.password).decode()
+        login = crypto.decrypt(request.login.encode()).decode()
+        password = crypto.decrypt(request.password.encode()).decode()
         crypto.create_or_login(login, password)
-        ledname = crypto.decrypt(request.ledname).decode()
-        state = crypto.decrypt(request.state).decode()
+        ledname = crypto.decrypt(request.ledname.encode()).decode()
+        state = crypto.decrypt(request.state.encode()).decode()
 
         print ("Blink led ", ledname)
         print ("...with state ", state)
