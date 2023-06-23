@@ -39,7 +39,7 @@ def produce_led_command(state, ledname):
     key = crypto.encrypt(ledname)
     value = crypto.encrypt(str(state))
     # producer.send('ledcommand', key=ledname.encode(), value=str(state).encode())
-    producer.send('ledcommand', key=key.encode(), value=value.encode())
+    producer.send('ledcommand', key=key, value=value)
     return state
         
 class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):

@@ -67,8 +67,8 @@ def consume_led_command():
     consumer.subscribe(topics=('ledcommand'))
     ledpin = 0
     for msg in consumer:
-        msg_key = crypto.decrypt(msg.key.decode())
-        msg_value = crypto.decrypt(msg.value.decode())
+        msg_key = crypto.decrypt(msg.key)
+        msg_value = crypto.decrypt(msg.value)
         print ('Led command received: ', msg_key)
         print ('Led to blink: ', msg_value)
         if msg_key == 'red':
