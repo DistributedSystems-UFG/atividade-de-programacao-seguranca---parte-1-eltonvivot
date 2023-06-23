@@ -14,10 +14,10 @@ from const import *
 def run():
     with grpc.insecure_channel(GRPC_SERVER+':'+GRPC_PORT) as channel:
         
-        state = crypto.encrypt(sys.argv[1])
-        ledname = crypto.encrypt(sys.argv[2])
-        login = crypto.encrypt(sys.argv[3])
-        password = crypto.encrypt(sys.argv[4])
+        state = crypto.encrypt(str(sys.argv[1]).encode())
+        ledname = crypto.encrypt(str(sys.argv[2]).encode())
+        login = crypto.encrypt(str(sys.argv[3]).encode())
+        password = crypto.encrypt(str(sys.argv[4]).encode())
 
         stub = iot_service_pb2_grpc.IoTServiceStub (channel)
         response = stub.BlinkLed(iot_service_pb2.LedRequest(state=state,ledname=ledname, login=login, password=password))
