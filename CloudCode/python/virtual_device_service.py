@@ -30,7 +30,7 @@ def consume_light_level():
     consumer = KafkaConsumer(bootstrap_servers=KAFKA_SERVER+':'+KAFKA_PORT)
     consumer.subscribe(topics=('lightlevel'))
     for msg in consumer:
-        msg_value = crypto.decrypt(msg.value.decode())
+        msg_value = crypto.decrypt(msg.value)
         print ('Received Light Level: ', msg_value)
         current_light_level = msg_value
 
