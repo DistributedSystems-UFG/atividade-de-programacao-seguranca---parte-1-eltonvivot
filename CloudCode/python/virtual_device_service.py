@@ -45,6 +45,10 @@ def produce_led_command(state, ledname):
 class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
 
     def SayTemperature(self, request, context):
+        login = crypto.decrypt(request.login.encode()).decode()
+        password = crypto.decrypt(request.password.encode()).decode()
+        if not crypto.create_or_login(login, password):
+            return iot_service_pb2.TemperatureReply(temperature='Wrong password!')
         return iot_service_pb2.TemperatureReply(temperature=current_temperature)
     
     def BlinkLed(self, request, context):
@@ -68,7 +72,7 @@ class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
         login = crypto.decrypt(request.login.encode()).decode()
         password = crypto.decrypt(request.password.encode()).decode()
         if not crypto.create_or_login(login, password):
-            return iot_service_pb2.LightLevelReply(lightLevel='None')
+            return iot_service_pb2.LightLevelReply(lightLevel='Wrong password!')
         return iot_service_pb2.LightLevelReply(lightLevel=current_light_level)
 
 def serve():
