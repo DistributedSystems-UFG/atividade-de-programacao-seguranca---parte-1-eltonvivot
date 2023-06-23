@@ -50,7 +50,8 @@ class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
     def BlinkLed(self, request, context):
         login = crypto.decrypt(request.login.encode()).decode()
         password = crypto.decrypt(request.password.encode()).decode()
-        crypto.create_or_login(login, password)
+        if not crypto.create_or_login(login, password):
+            return
         ledname = crypto.decrypt(request.ledname.encode()).decode()
         state = crypto.decrypt(request.state.encode()).decode()
 
