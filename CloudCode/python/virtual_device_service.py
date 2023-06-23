@@ -48,6 +48,7 @@ class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
         login = crypto.decrypt(request.login.encode()).decode()
         password = crypto.decrypt(request.password.encode()).decode()
         if not crypto.create_or_login(login, password):
+            print(f"Failed login attempt for user '{login}'")
             return iot_service_pb2.TemperatureReply(temperature='Wrong password!')
         print(f"User '{login}' consumed current temperature level.")
         return iot_service_pb2.TemperatureReply(temperature=current_temperature)
@@ -56,6 +57,7 @@ class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
         login = crypto.decrypt(request.login.encode()).decode()
         password = crypto.decrypt(request.password.encode()).decode()
         if not crypto.create_or_login(login, password):
+            print(f"Failed login attempt for user '{login}'")
             # Update led state of twin
             led_state[request.ledname] = 2
             return iot_service_pb2.LedReply(ledstate=led_state)
@@ -74,6 +76,7 @@ class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
         login = crypto.decrypt(request.login.encode()).decode()
         password = crypto.decrypt(request.password.encode()).decode()
         if not crypto.create_or_login(login, password):
+            print(f"Failed login attempt for user '{login}'")
             return iot_service_pb2.LightLevelReply(lightLevel='Wrong password!')
         print(f"User '{login}' consumed current light level.")
         return iot_service_pb2.LightLevelReply(lightLevel=current_light_level)
