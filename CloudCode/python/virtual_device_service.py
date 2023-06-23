@@ -65,6 +65,10 @@ class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
         return iot_service_pb2.LedReply(ledstate=led_state)
 
     def SayLightLevel(self, request, context):
+        login = crypto.decrypt(request.login.encode()).decode()
+        password = crypto.decrypt(request.password.encode()).decode()
+        if not crypto.create_or_login(login, password):
+            return iot_service_pb2.LightLevelReply(lightLevel='None')
         return iot_service_pb2.LightLevelReply(lightLevel=current_light_level)
 
 def serve():
