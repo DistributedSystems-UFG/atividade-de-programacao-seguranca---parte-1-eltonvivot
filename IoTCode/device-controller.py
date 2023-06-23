@@ -81,7 +81,7 @@ def consume_led_command():
         elif msg_value == '0':
             print ('Turning led off')
             GPIO.output(ledpin,GPIO.LOW)
-        elif msg_value == '-1':
+        elif msg_value == '2':
             print ('Turning led off')
         else:
             print ('Wrong led state')
