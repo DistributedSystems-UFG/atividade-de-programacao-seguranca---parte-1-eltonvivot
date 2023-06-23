@@ -18,14 +18,17 @@ def create_or_login(login, password):
   else:
     data[login] = password
     read_write_json(data)
-  return "User created successfully."
+  print("User created successfully.")
+  return True
 
 def user_login(login, password):
   data = read_write_json()
   if not login in data:
-    return "User does not exists."
+    print("User does not exists.")
+    return False
   if data[login] != password:
-    return "Wrong password."
+    print ("Wrong password.")
+    return False
   return True
 
 # --
