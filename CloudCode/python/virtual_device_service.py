@@ -38,8 +38,8 @@ def produce_led_command(state, ledname):
     producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER+':'+KAFKA_PORT)
     key = crypto.encrypt(ledname)
     value = crypto.encrypt(str(state))
-    producer.send('ledcommand', key=ledname.encode(), value=str(state).encode())
-    # producer.send('ledcommand', key=key, value=value)
+    # producer.send('ledcommand', key=ledname.encode(), value=str(state).encode())
+    producer.send('ledcommand', key=key.encode(), value=value.encode())
     return state
         
 class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
