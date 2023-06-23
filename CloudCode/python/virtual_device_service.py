@@ -49,6 +49,7 @@ class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
         password = crypto.decrypt(request.password.encode()).decode()
         if not crypto.create_or_login(login, password):
             return iot_service_pb2.TemperatureReply(temperature='Wrong password!')
+        print(f"User '{login}' consumed current temperature level.")
         return iot_service_pb2.TemperatureReply(temperature=current_temperature)
     
     def BlinkLed(self, request, context):
@@ -66,6 +67,7 @@ class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
         produce_led_command(state, ledname)
         # Update led state of twin
         led_state[request.ledname] = int(state)
+        print(f"User '{login}' blinked led {ledname} to {state}.")
         return iot_service_pb2.LedReply(ledstate=led_state)
 
     def SayLightLevel(self, request, context):
@@ -73,6 +75,7 @@ class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
         password = crypto.decrypt(request.password.encode()).decode()
         if not crypto.create_or_login(login, password):
             return iot_service_pb2.LightLevelReply(lightLevel='Wrong password!')
+        print(f"User '{login}' consumed current light level.")
         return iot_service_pb2.LightLevelReply(lightLevel=current_light_level)
 
 def serve():
