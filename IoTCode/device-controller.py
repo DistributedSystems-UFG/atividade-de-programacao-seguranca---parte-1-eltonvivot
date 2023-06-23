@@ -71,11 +71,11 @@ def consume_led_command():
         msg_value = crypto.decrypt(msg.value)
         print ('Led command received: ', msg_key)
         print ('Led to blink: ', msg_value)
-        if msg.key == b'red':
+        if msg_key == 'red':
             ledpin = red_led_pin
         else:
             ledpin = green_led_pin
-        if msg.value == b'1':
+        if msg_value == '1':
             print ('Turning led on')
             GPIO.output(ledpin,GPIO.HIGH)
         else:
