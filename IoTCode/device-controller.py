@@ -67,8 +67,8 @@ def consume_led_command():
     consumer.subscribe(topics=('ledcommand'))
     ledpin = 0
     for msg in consumer:
-        msg_key = crypto.decrypt(msg.key)
-        msg_value = crypto.decrypt(msg.value)
+        msg_key = crypto.decrypt(msg.key).decode()
+        msg_value = crypto.decrypt(msg.value).decode()
         print ('Led command received: ', msg_key)
         print ('Led to blink: ', msg_value)
         if msg_key == 'red':
@@ -91,12 +91,12 @@ while True:
     print('Temperature: ', temp_c, temp_f)
     if (math.fabs(temp_c - last_reported_temp) >= 0.1):
         last_reported_temp = temp_c
-        producer.send('temperature', crypto.encrypt(str(temp_c)))
+        producer.send('temperature', crypto.encrypt(str(temp_c).encode()))
 
     # Read and report light lelve to the cloud-based service
     light_level = read_light_sensor(light_sensor_pin)
     print('Light level: ', light_level)
     if (light_level != last_reported_light_level):
         last_reported_light_level = light_level
-        producer.send('lightlevel', crypto.encrypt(str(light_level)))
+        producer.send('lightlevel', crypto.encrypt(str(light_level).encode()))
     time.sleep(1)

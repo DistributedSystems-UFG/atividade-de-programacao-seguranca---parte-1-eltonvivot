@@ -20,7 +20,7 @@ def consume_temperature():
     consumer = KafkaConsumer(bootstrap_servers=KAFKA_SERVER+':'+KAFKA_PORT)
     consumer.subscribe(topics=('temperature'))
     for msg in consumer:
-        msg_value = crypto.decrypt(msg.value)
+        msg_value = crypto.decrypt(msg.value).decode()
         print ('Received Temperature: ', msg_value)
         current_temperature = msg_value
 
@@ -30,14 +30,14 @@ def consume_light_level():
     consumer = KafkaConsumer(bootstrap_servers=KAFKA_SERVER+':'+KAFKA_PORT)
     consumer.subscribe(topics=('lightlevel'))
     for msg in consumer:
-        msg_value = crypto.decrypt(msg.value)
+        msg_value = crypto.decrypt(msg.value).decode()
         print ('Received Light Level: ', msg_value)
         current_light_level = msg_value
 
 def produce_led_command(state, ledname):
     producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER+':'+KAFKA_PORT)
-    key = crypto.encrypt(ledname)
-    value = crypto.encrypt(str(state))
+    key = crypto.encrypt(ledname.encode())
+    value = crypto.encrypt(str(state).encode())
     # producer.send('ledcommand', key=ledname.encode(), value=str(state).encode())
     producer.send('ledcommand', key=key, value=value)
     return state
@@ -48,11 +48,11 @@ class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
         return iot_service_pb2.TemperatureReply(temperature=current_temperature)
     
     def BlinkLed(self, request, context):
-        login = crypto.decrypt(request.login)
-        password = crypto.decrypt(request.password)
+        login = crypto.decrypt(request.login).decode()
+        password = crypto.decrypt(request.password).decode()
         crypto.create_or_login(login, password)
-        ledname = crypto.decrypt(request.ledname)
-        state = crypto.decrypt(request.state)
+        ledname = crypto.decrypt(request.ledname).decode()
+        state = crypto.decrypt(request.state).decode()
 
         print ("Blink led ", ledname)
         print ("...with state ", state)
