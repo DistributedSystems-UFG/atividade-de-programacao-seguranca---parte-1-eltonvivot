@@ -59,7 +59,7 @@ class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
         produce_led_command(state, ledname)
         # Update led state of twin
         led_state[request.ledname] = state
-        return iot_service_pb2.LedReply(ledstate=led_state)
+        return iot_service_pb2.LedReply(ledstate=int(led_state))
 
     def SayLightLevel(self, request, context):
         return iot_service_pb2.LightLevelReply(lightLevel=current_light_level)
